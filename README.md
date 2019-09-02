@@ -20,7 +20,7 @@ $ npm install @base2/pretty-print-object
 ## Usage
 
 ```js
-const stringifyObject = require('stringify-object');
+const stringifyObject = require('@base2/pretty-print-object');
 
 const obj = {
 	foo: 'bar',
@@ -98,7 +98,7 @@ Expected to return a `string` that transforms the string that resulted from stri
 Here's an example that uses the `transform` option to mask fields named "password":
 
 ```js
-const stringifyObject = require('stringify-object');
+const stringifyObject = require('@base2/pretty-print-object');
 
 const obj = {
 	user: 'becky',
@@ -134,7 +134,7 @@ When set, will inline values up to `inlineCharacterLimit` length for the sake of
 For example, given the example at the top of the README:
 
 ```js
-const stringifyObject = require('stringify-object');
+const stringifyObject = require('@base2/pretty-print-object');
 
 const obj = {
 	foo: 'bar',
