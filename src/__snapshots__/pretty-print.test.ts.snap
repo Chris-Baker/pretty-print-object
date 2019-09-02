@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Stringify object should stringify a complex object 1`] = `
+exports[`Pretty print object should pretty print a complex object 1`] = `
 "{
   foo: \\"bar 'bar'\\",
   foo2: [
@@ -33,7 +33,7 @@ exports[`Stringify object should stringify a complex object 1`] = `
 }"
 `;
 
-exports[`Stringify object should stringify a simple object and create a snapshot 1`] = `
+exports[`Pretty print object should pretty print a simple object and create a snapshot 1`] = `
 "{
 	foo: 'a \\\\' b \\\\' c \\\\' d'
 }"

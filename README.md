@@ -1,7 +1,7 @@
 # Pretty print object
 [![License][license-image]][license-url] ![coverage-badge-green]
  
-> Stringify an object/array like JSON.stringify just without all the double-quotes
+> Convert an object or array into a formatted string
 
 This is a fork of [stringify-object], modified to inline the dependencies and make it compatible with ES5 out of the box.
 
@@ -20,33 +20,33 @@ $ npm install @base2/pretty-print-object
 ## Usage
 
 ```js
-const stringifyObject = require('@base2/pretty-print-object');
+import { prettyPrint } from '@base2/pretty-print-object';
 
 const obj = {
-	foo: 'bar',
-	'arr': [1, 2, 3],
-	nested: {
-		hello: "world"
-	}
+    foo: 'bar',
+    'arr': [1, 2, 3],
+    nested: {
+        hello: "world"
+    }
 };
 
-const pretty = stringifyObject(obj, {
-	indent: '  ',
-	singleQuotes: false
+const pretty = prettyPrint(obj, {
+    indent: '  ',
+    singleQuotes: false
 });
 
 console.log(pretty);
 /*
 {
-	foo: "bar",
-	arr: [
-		1,
-		2,
-		3
-	],
-	nested: {
-		hello: "world"
-	}
+    foo: "bar",
+    arr: [
+        1,
+        2,
+        3
+    ],
+    nested: {
+        hello: "world"
+    }
 }
 */
 ```
@@ -54,7 +54,7 @@ console.log(pretty);
 
 ## API
 
-### stringifyObject(input, [options])
+### prettyPrint(input, [options])
 
 Circular references will be replaced with `"[Circular]"`.
 
@@ -98,28 +98,28 @@ Expected to return a `string` that transforms the string that resulted from stri
 Here's an example that uses the `transform` option to mask fields named "password":
 
 ```js
-const stringifyObject = require('@base2/pretty-print-object');
+import { prettyPrint } from '@base2/pretty-print-object';
 
 const obj = {
-	user: 'becky',
-	password: 'secret'
+    user: 'becky',
+    password: 'secret'
 };
 
-const pretty = stringifyObject(obj, {
-	transform: (obj, prop, originalResult) => {
-		if (prop === 'password') {
-			return originalResult.replace(/\w/g, '*');
-		}
+const pretty = prettyPrint(obj, {
+    transform: (obj, prop, originalResult) => {
+        if (prop === 'password') {
+            return originalResult.replace(/\w/g, '*');
+        }
 
-		return originalResult;
-	}
+        return originalResult;
+    }
 });
 
 console.log(pretty);
 /*
 {
-	user: 'becky',
-	password: '******'
+    user: 'becky',
+    password: '******'
 }
 */
 ```
@@ -134,30 +134,30 @@ When set, will inline values up to `inlineCharacterLimit` length for the sake of
 For example, given the example at the top of the README:
 
 ```js
-const stringifyObject = require('@base2/pretty-print-object');
+import { prettyPrint } from '@base2/pretty-print-object';
 
 const obj = {
-	foo: 'bar',
-	'arr': [1, 2, 3],
-	nested: {
-		hello: "world"
-	}
+    foo: 'bar',
+    'arr': [1, 2, 3],
+    nested: {
+        hello: "world"
+    }
 };
 
-const pretty = stringifyObject(obj, {
-	indent: '  ',
-	singleQuotes: false,
-	inlineCharacterLimit: 12
+const pretty = prettyPrint(obj, {
+    indent: '  ',
+    singleQuotes: false,
+    inlineCharacterLimit: 12
 });
 
 console.log(pretty);
 /*
 {
-	foo: "bar",
-	arr: [1, 2, 3],
-	nested: {
-		hello: "world"
-	}
+    foo: "bar",
+    arr: [1, 2, 3],
+    nested: {
+        hello: "world"
+    }
 }
 */
 ```
