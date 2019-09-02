@@ -1,4 +1,4 @@
-# Stringify Object ES5
+# Pretty print object
 [![License][license-image]][license-url] ![coverage-badge-green]
  
 > Stringify an object/array like JSON.stringify just without all the double-quotes
@@ -13,7 +13,7 @@ It also handles circular references and lets you specify quote type.
 ## Install
 
 ```
-$ npm install stringify-object-es5
+$ npm install @base2/pretty-print-object
 ```
 
 

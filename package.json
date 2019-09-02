@@ -1,10 +1,10 @@
 {
-  "name": "stringify-object-es5",
-  "version": "0.0.1",
-  "description": "Stringify an object/array like JSON.stringify just without all the double-quotes",
+  "name": "@base2/pretty-print-object",
+  "version": "0.0.2",
+  "description": "Convert an object or array into a formatted string",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chris-Baker/Emotion-RGBA.git"
+    "url": "https://github.com/Chris-Baker/pretty-print-object"
   },
   "main": "dist/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "dist/"
   ],
   "author": "Chris Baker",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.4.3",
