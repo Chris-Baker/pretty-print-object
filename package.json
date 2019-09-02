@@ -1,6 +1,6 @@
 {
   "name": "@base2/pretty-print-object",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "Convert an object or array into a formatted string",
   "repository": {
     "type": "git",
