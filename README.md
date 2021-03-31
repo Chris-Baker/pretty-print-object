@@ -3,7 +3,7 @@
  
 > Convert an object or array into a formatted string
 
-This is a fork of [stringify-object], modified to inline the dependencies and make it compatible with ES5 out of the box.
+This is a re-write of [stringify-object] in Typescript, modified to inline the dependencies and make it compatible with ES5 out of the box.
 
 Useful for when you want to get the string representation of an object in a formatted way.
 
