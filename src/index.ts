@@ -30,12 +30,16 @@ interface PrettyPrintOptions {
      * @param prop
      * @param originalResult
      */
-    transform?: (obj: any, prop: string | symbol | number, originalResult: string) => string;
+    transform?: (
+        obj: any,
+        prop: string | symbol | number,
+        originalResult: string
+    ) => string;
 
     /**
      * When set, will inline values up to inlineCharacterLimit length for the sake of more terse output.
      */
-    inlineCharacterLimit?: number
+    inlineCharacterLimit?: number;
 }
 
 const seen: any[] = [];
@@ -67,12 +71,22 @@ function isRegexp(value: any) {
  * @param object the object to get the enumerable symbols for
  */
 function getOwnEnumPropSymbols(object: object): symbol[] {
-    return Object.getOwnPropertySymbols(object).filter((keySymbol): boolean => Object.prototype.propertyIsEnumerable.call(object, keySymbol));
+    if (typeof Object.getOwnPropertySymbols !== 'function') {
+        return [];
+    }
+
+    return Object.getOwnPropertySymbols(object).filter((keySymbol): boolean =>
+        Object.prototype.propertyIsEnumerable.call(object, keySymbol)
+    );
 }
 
 export function prettyPrint(input: any): string;
 export function prettyPrint(input: any, options: PrettyPrintOptions): string;
-export function prettyPrint(input: any, options: PrettyPrintOptions, pad: string): string;
+export function prettyPrint(
+    input: any,
+    options: PrettyPrintOptions,
+    pad: string
+): string;
 
 /**
  * pretty print an object
@@ -81,31 +95,34 @@ export function prettyPrint(input: any, options: PrettyPrintOptions, pad: string
  * @param options the formatting options, transforms, and filters
  * @param pad the padding string
  */
-export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: string = ''): string {
-
+export function prettyPrint(
+    input: any,
+    options?: PrettyPrintOptions,
+    pad: string = ''
+): string {
     // sensible option defaults
     const defaultOptions: PrettyPrintOptions = {
         indent: '\t',
         singleQuotes: true
     };
 
-    const combinedOptions = {...defaultOptions, ...options};
+    const combinedOptions = { ...defaultOptions, ...options };
 
-    let tokens: {[key: string]: string};
+    let tokens: { [key: string]: string };
 
     if (combinedOptions.inlineCharacterLimit === undefined) {
         tokens = {
-            newLine:        '\n',
+            newLine: '\n',
             newLineOrSpace: '\n',
-            pad:            pad,
-            indent:         pad + combinedOptions.indent
+            pad: pad,
+            indent: pad + combinedOptions.indent
         };
     } else {
         tokens = {
-            newLine:        '@@__PRETTY_PRINT_NEW_LINE__@@',
+            newLine: '@@__PRETTY_PRINT_NEW_LINE__@@',
             newLineOrSpace: '@@__PRETTY_PRINT_NEW_LINE_OR_SPACE__@@',
-            pad:            '@@__PRETTY_PRINT_PAD__@@',
-            indent:         '@@__PRETTY_PRINT_INDENT__@@'
+            pad: '@@__PRETTY_PRINT_PAD__@@',
+            indent: '@@__PRETTY_PRINT_INDENT__@@'
         };
     }
 
@@ -124,16 +141,23 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
         }
 
         return string
-            .replace(new RegExp(tokens.newLine + '|' + tokens.newLineOrSpace, 'g'), '\n')
+            .replace(
+                new RegExp(tokens.newLine + '|' + tokens.newLineOrSpace, 'g'),
+                '\n'
+            )
             .replace(new RegExp(tokens.pad, 'g'), pad)
-            .replace(new RegExp(tokens.indent, 'g'), pad + combinedOptions.indent);
+            .replace(
+                new RegExp(tokens.indent, 'g'),
+                pad + combinedOptions.indent
+            );
     };
 
     if (seen.indexOf(input) !== -1) {
         return '"[Circular]"';
     }
 
-    if (input === null ||
+    if (
+        input === null ||
         input === undefined ||
         typeof input === 'number' ||
         typeof input === 'boolean' ||
@@ -145,8 +169,8 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
     }
 
     if (input instanceof Date) {
-        if (Number.isNaN(input.getTime())) {
-            return `Invalid Date`;
+        if (isNaN(input.getTime())) {
+            return 'Invalid Date';
         } else {
             return `new Date('${input.toISOString()}')`;
         }
@@ -159,16 +183,30 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
 
         seen.push(input);
 
-        const ret = '[' + tokens.newLine + input.map((el, i) => {
-            const eol = input.length - 1 === i ? tokens.newLine : ',' + tokens.newLineOrSpace;
+        const ret =
+            '[' +
+            tokens.newLine +
+            input
+                .map((el, i) => {
+                    const eol =
+                        input.length - 1 === i
+                            ? tokens.newLine
+                            : ',' + tokens.newLineOrSpace;
 
-            let value = prettyPrint(el, combinedOptions, pad + combinedOptions.indent);
-            if (combinedOptions.transform) {
-                value = combinedOptions.transform(input, i, value);
-            }
+                    let value = prettyPrint(
+                        el,
+                        combinedOptions,
+                        pad + combinedOptions.indent
+                    );
+                    if (combinedOptions.transform) {
+                        value = combinedOptions.transform(input, i, value);
+                    }
 
-            return tokens.indent + value + eol;
-        }).join('') + tokens.pad + ']';
+                    return tokens.indent + value + eol;
+                })
+                .join('') +
+            tokens.pad +
+            ']';
 
         seen.pop();
 
@@ -176,10 +214,13 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
     }
 
     if (isObj(input)) {
-        let objKeys = [...Object.keys(input), ...(getOwnEnumPropSymbols(input))];
+        let objKeys = [...Object.keys(input), ...getOwnEnumPropSymbols(input)];
 
         if (combinedOptions.filter) {
-            objKeys = objKeys.filter(el => combinedOptions.filter && combinedOptions.filter(input, el));
+            objKeys = objKeys.filter(
+                (el) =>
+                    combinedOptions.filter && combinedOptions.filter(input, el)
+            );
         }
 
         if (objKeys.length === 0) {
@@ -188,32 +229,53 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
 
         seen.push(input);
 
-        const ret = '{' + tokens.newLine + objKeys.map((el, i) => {
-            const eol = objKeys.length - 1 === i ? tokens.newLine : ',' + tokens.newLineOrSpace;
-            const isSymbol = typeof el === 'symbol';
-            const isClassic = !isSymbol && /^[a-z$_][a-z$_0-9]*$/i.test(el.toString());
-            const key = isSymbol || isClassic ? el : prettyPrint(el, combinedOptions);
+        const ret =
+            '{' +
+            tokens.newLine +
+            objKeys
+                .map((el, i) => {
+                    const eol =
+                        objKeys.length - 1 === i
+                            ? tokens.newLine
+                            : ',' + tokens.newLineOrSpace;
+                    const isSymbol = typeof el === 'symbol';
+                    const isClassic =
+                        !isSymbol &&
+                        /^[a-z$_][a-z$_0-9]*$/i.test(el.toString());
+                    const key =
+                        isSymbol || isClassic
+                            ? el
+                            : prettyPrint(el, combinedOptions);
 
-            let value = prettyPrint(input[el], combinedOptions, pad + combinedOptions.indent);
-            if (combinedOptions.transform) {
-                value = combinedOptions.transform(input, el, value);
-            }
+                    let value = prettyPrint(
+                        input[el],
+                        combinedOptions,
+                        pad + combinedOptions.indent
+                    );
+                    if (combinedOptions.transform) {
+                        value = combinedOptions.transform(input, el, value);
+                    }
 
-            return tokens.indent + String(key) + ': ' + value + eol;
-        }).join('') + tokens.pad + '}';
+                    return tokens.indent + String(key) + ': ' + value + eol;
+                })
+                .join('') +
+            tokens.pad +
+            '}';
 
         seen.pop();
 
         return expandWhiteSpace(ret);
     }
 
-    input = String(input).replace(/[\r\n]/g, x => x === '\n' ? '\\n' : '\\r');
+    input = String(input).replace(/[\r\n]/g, (x) =>
+        x === '\n' ? '\\n' : '\\r'
+    );
 
     if (!combinedOptions.singleQuotes) {
         input = input.replace(/"/g, '\\"');
         return `"${input}"`;
     }
 
-    input = input.replace(/\\?'/g, '\\\'');
+    input = input.replace(/\\?'/g, "\\'");
     return `'${input}'`;
 }
