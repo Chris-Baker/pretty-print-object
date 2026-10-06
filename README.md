@@ -174,6 +174,7 @@ As you can see, `arr` was printed as a one-liner because its string was shorter 
 Use Node.js 24 (`nvm use`), then run:
 
 ```sh
+npm run check:dependencies
 npm ci
 npm run check
 ```
@@ -191,3 +192,20 @@ and skipped in runtimes without symbols.
 
 Run `npm run build` to rebuild `dist`, or `npm pack --dry-run` to inspect the
 package contents. Packing also rebuilds the package automatically.
+
+### Dependency security
+
+`npm run check:dependencies` checks publication dates for every locked dependency
+(including optional packages) and runs the full npm audit. CI runs this before
+installing dependencies and fails on any reported vulnerability or package less
+than seven days old. Unknown publication dates also fail the check.
+
+The project `.npmrc` sets `min-release-age=7` for npm versions that support it
+(including npm 11.16). The independent lockfile check also covers older npm
+versions and updates that preserve already-locked versions.
+
+A scoped override uses `js-yaml` 4.3.2 for `@istanbuljs/load-nyc-config`, removing
+its old `argparse` / `sprintf-js` chain and advisory
+[GHSA-hp3w-g68c-fv3c](https://github.com/advisories/GHSA-hp3w-g68c-fv3c).
+A regression test checks YAML configuration inheritance through the real loader.
+Remove the override when the upstream loader updates its dependency.
