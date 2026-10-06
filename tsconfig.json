@@ -1,28 +1,18 @@
 {
     "compilerOptions": {
         "outDir": "./dist",
-        "module": "commonjs",
-        "target": "es5",
-        "lib": ["esnext"],
-        "allowJs": false,
-        "jsx": "preserve",
-        "moduleResolution": "node",
-        "forceConsistentCasingInFileNames": true,
+        "rootDir": "./src",
+        "module": "Node16",
+        "moduleResolution": "Node16",
+        "target": "ES2015",
+        "lib": ["ES2015"],
+        "types": [],
+        "strict": true,
         "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
+        "forceConsistentCasingInFileNames": true,
         "declaration": true,
-        "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "esModuleInterop": true,
-        "typeRoots": ["node_modules/@types"],
-        "rootDirs": ["src"],
-        "baseUrl": "src"
+        "emitDeclarationOnly": true
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "**/**.test.ts"]
+    "include": ["src/index.ts"]
 }

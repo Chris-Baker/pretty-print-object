@@ -1,6 +1,7 @@
 # Pretty print object
-[![License][license-image]][license-url] ![coverage-badge-green]
- 
+
+[![License][license-image]][license-url] [![CI][ci-image]][ci-url]
+
 > Convert an object or array into a formatted string
 
 This is a re-write of [stringify-object] in Typescript, modified to inline the dependencies and make it compatible with ES5 out of the box.
@@ -9,13 +10,11 @@ Useful for when you want to get the string representation of an object in a form
 
 It also handles circular references and lets you specify quote type.
 
-
 ## Install
 
 ```
 $ npm install @base2/pretty-print-object
 ```
-
 
 ## Usage
 
@@ -24,9 +23,9 @@ import { prettyPrint } from '@base2/pretty-print-object';
 
 const obj = {
     foo: 'bar',
-    'arr': [1, 2, 3],
+    arr: [1, 2, 3],
     nested: {
-        hello: "world"
+        hello: 'world'
     }
 };
 
@@ -51,10 +50,11 @@ console.log(pretty);
 */
 ```
 
-
 ## API
 
 ### prettyPrint(input, [options])
+
+Invalid dates are printed as `Invalid Date` instead of throwing an exception. Valid dates retain the `new Date('...')` representation.
 
 Circular references will be replaced with `"[Circular]"`.
 
@@ -124,7 +124,6 @@ console.log(pretty);
 */
 ```
 
-
 ##### inlineCharacterLimit
 
 Type: `number`
@@ -138,9 +137,9 @@ import { prettyPrint } from '@base2/pretty-print-object';
 
 const obj = {
     foo: 'bar',
-    'arr': [1, 2, 3],
+    arr: [1, 2, 3],
     nested: {
-        hello: "world"
+        hello: 'world'
     }
 };
 
@@ -165,6 +164,30 @@ console.log(pretty);
 As you can see, `arr` was printed as a one-liner because its string was shorter than 12 characters.
 
 [stringify-object]: https://www.npmjs.com/package/stringify-object
-[coverage-badge-green]: https://img.shields.io/badge/Coverage-100%25-brightgreen.svg
+[ci-image]: https://github.com/Chris-Baker/pretty-print-object/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/Chris-Baker/pretty-print-object/actions/workflows/ci.yml
 [license-url]: https://opensource.org/licenses/BSD-2-Clause
 [license-image]: https://img.shields.io/badge/License-BSD%202--Clause-orange.svg
+
+## Development
+
+Use Node.js 24 (`nvm use`), then run:
+
+```sh
+npm ci
+npm run check
+```
+
+`check` runs ESLint, Prettier, TypeScript checking and all Jest tests. CI runs
+these checks on every pull request and on pushes to `master`, using Node.js
+22, 24 and 26. Tests parse the built JavaScript as ES5 and exercise it with
+ES2015 built-ins removed from an isolated runtime.
+
+SWC produces the CommonJS ES5 build. TypeScript emits declarations separately;
+its target setting does not control the published JavaScript. TypeScript stays
+on the latest version supported by typescript-eslint. The published package
+has no runtime dependencies. Symbol properties are included where supported
+and skipped in runtimes without symbols.
+
+Run `npm run build` to rebuild `dist`, or `npm pack --dry-run` to inspect the
+package contents. Packing also rebuilds the package automatically.
