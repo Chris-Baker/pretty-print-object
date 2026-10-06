@@ -14,8 +14,20 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    dependency-security:
+        name: Dependency security
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+            - run: node scripts/check-dependency-age.mjs
+            - run: npm audit --audit-level=low
+
     checks:
         name: Node ${{ matrix.node }}
+        needs: dependency-security
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false

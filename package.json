@@ -15,7 +15,8 @@
         "typecheck": "tsc -p tsconfig.test.json --noEmit",
         "test": "npm run build && jest --runInBand",
         "check": "npm run lint && npm run format:check && npm run typecheck && npm test",
-        "prepack": "npm run build"
+        "prepack": "npm run build",
+        "check:dependencies": "node scripts/check-dependency-age.mjs && npm audit --audit-level=low"
     },
     "keywords": [
         "object",
@@ -34,17 +35,22 @@
     "license": "BSD-2-Clause",
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@swc/core": "^1.16.13",
+        "@swc/core": "^1.16.12",
         "@swc/jest": "^0.2.39",
         "@types/jest": "^30.0.0",
-        "@types/node": "^24.19.1",
-        "acorn": "^8.19.0",
-        "eslint": "^10.12.0",
+        "@types/node": "^24.19.0",
+        "acorn": "^8.18.0",
+        "eslint": "^10.11.0",
         "eslint-config-prettier": "^10.1.8",
         "jest": "^30.5.2",
         "prettier": "^3.9.9",
         "typescript": "~6.0.3",
-        "typescript-eslint": "^8.71.1"
+        "typescript-eslint": "^8.71.0"
     },
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "overrides": {
+        "@istanbuljs/load-nyc-config": {
+            "js-yaml": "4.3.2"
+        }
+    }
 }
