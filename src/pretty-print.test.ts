@@ -145,6 +145,16 @@ describe('Pretty print object', () => {
         expect(prettyPrint(obj)).toBe('{\n\tSymbol(for enumerable key): undefined\n}');
     });
 
+    test('should pretty print valid date', () => {
+        const date = new Date('2019-01-01T00:00:00Z');
+        expect(prettyPrint(date)).toBe(`new Date('2019-01-01T00:00:00.000Z')`);
+    })
+
+    test('not throw an error if date is invalid', () => {
+        const date = new Date('undefined');
+        expect(prettyPrint(date)).toBe('Invalid Date');
+    })
+
     test('handles empty input', () => {
         expect(prettyPrint([])).toBe('[]');
         expect(prettyPrint({})).toBe('{}');

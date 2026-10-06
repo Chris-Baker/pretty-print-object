@@ -145,7 +145,11 @@ export function prettyPrint(input: any, options?: PrettyPrintOptions, pad: strin
     }
 
     if (input instanceof Date) {
-        return `new Date('${input.toISOString()}')`;
+        if (Number.isNaN(input.getTime())) {
+            return `Invalid Date`;
+        } else {
+            return `new Date('${input.toISOString()}')`;
+        }
     }
 
     if (Array.isArray(input)) {
