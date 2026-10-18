@@ -37,15 +37,15 @@ const pretty = prettyPrint(obj, {
 console.log(pretty);
 /*
 {
-    foo: "bar",
-    arr: [
-        1,
-        2,
-        3
-    ],
-    nested: {
-        hello: "world"
-    }
+  foo: "bar",
+  arr: [
+    1,
+    2,
+    3
+  ],
+  nested: {
+    hello: "world"
+  }
 }
 */
 ```
@@ -152,11 +152,11 @@ const pretty = prettyPrint(obj, {
 console.log(pretty);
 /*
 {
-    foo: "bar",
-    arr: [1, 2, 3],
-    nested: {
-        hello: "world"
-    }
+  foo: "bar",
+  arr: [1, 2, 3],
+  nested: {
+    hello: "world"
+  }
 }
 */
 ```

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4
+
+- Remove the development section from the README.
+- Correct the indentation shown in the README example outputs.
+
 ## 1.0.3
 
 - Fix invalid Date values throwing during printing (issue #22, contributed by
